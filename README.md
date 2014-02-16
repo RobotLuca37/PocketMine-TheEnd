@@ -1,4 +1,4 @@
 PocketMine-TheEnd
 =================
 
-The end - PocketMine Plugin
+The End - a PocketMine Plugin
