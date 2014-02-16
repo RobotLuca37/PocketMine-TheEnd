@@ -28,9 +28,29 @@ class TheEndPlugin implements Plugin{
 		$this->genHemiSph($this->randPos(new Position(128, 48, 128, $end), new Vector3(64, 24, 64)), BlockAPI::get(ENDSTONE_SUBST), mt_rand(16, 24), 50);
 	}
 	public function randPos(Position $principal, Vector3 $maxVar){
-		//TODO
+		return new Position(
+			$principal->x + mt_rand(-1 * abs($maxVar->x), abs($maxVar->x)),
+			$principal->y + mt_rand(-1 * abs($maxVar->y), abs($maxVar->y)),
+			$principal->z + mt_rand(-1 * abs($maxVar->z), abs($maxVar->z)),
+			$principal->level);
 	}
-	public function genHemiSph(Position $centre, Block $material, $size, $percentage){
-		//TODO Note: use Vector3::distance(Vector3) is faster
+	public function genHemiSph(Position $centre, Block $material, $radius, $vertPerct){
+		$startX = $centre->x - $radius;
+		$startY = $centre->y - $radius;
+		$startZ = $centre->z - $radius;
+		$endX = $centre->x + $radius;
+		$endZ = $centre->z + $radius;
+		$endY = $startY + $radius * 2 * $vertPerct / 100;
+		for($x=$startX; $x<=$endX; $x++){
+			for($y=$startY; $y<=$endY; $y++){
+				for($z=$startZ; $z<=$endZ; $z++){
+					$pos = new Position($x, $y, $z, $centre->level);
+					if($pos->distance($centre)<=$radius){
+						$centre->level->setBlock($pos, $material);
+					}
+				}
+			}
+		}
+		return true;
 	}
 }
