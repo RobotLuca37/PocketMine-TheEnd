@@ -134,5 +134,37 @@ class TheEndPlugin implements Plugin{
 	public function moveDragon(Level $level, Vector3 $vectors){
 		
 	}
+	public function getDirection(){
+		$rotation = ($this->yaw - 90) % 360;
+		if($rotation < 0) {
+		$rotation += 360.0;
+		}
+		if((0 <= $rotation and $rotation < 45) or (315 <= $rotation and $rotation < 360)){
+		return 2; //North
+		}elseif(45 <= $rotation and $rotation < 135){
+		return 3; //East
+		}elseif(135 <= $rotation and $rotation < 225){
+		return 0; //South
+		}elseif(225 <= $rotation and $rotation < 315){
+		return 1; //West
+		}else{
+		return null;
+		}
+		}
+	public function damageEnderMan() {
+		if($this->type == MOB_ZOMBIE){ //EnderMan
+		if($this->distance($target) <= 1){
+		if($this->server->difficulty == 1){
+		$target->harm(3,$this->eid);
+		}elseif($this->server->difficulty == 2){
+		$target->harm(4,$this->eid);
+		}elseif($this->server->difficulty == 3){
+		$target->harm(6,$this->eid);
+		}
+		}
+	}
 	
-}
+	
+	} // End
+	
+} //End
